@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
@@ -11,7 +11,6 @@ const SavedBooks = () => {
   // loader??
   const { loading, data }  = useQuery(QUERY_ME);
   const userData = data?.me;
-  console.log('userData: ', userData);
 
   const [removeBook] = useMutation(REMOVE_BOOK);
 
@@ -30,9 +29,6 @@ const SavedBooks = () => {
       const { data } = await removeBook({
         variables: { "bookId":  bookId } });
 
-      // const updatedUser = await response.json();
-      // setUserData(updatedUser);
-      // upon success, remove book's id from localStorage
       removeBookId(bookId);
     } catch (err) {
       console.error(err);
