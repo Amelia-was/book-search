@@ -10,7 +10,7 @@ import { removeBookId } from '../utils/localStorage';
 const SavedBooks = () => {
   // loader??
   const { loading, data }  = useQuery(QUERY_ME);
-  const userData = data?.me
+  const userData = data?.me;
   console.log('userData: ', userData);
 
   const [removeBook] = useMutation(REMOVE_BOOK);
@@ -27,11 +27,8 @@ const SavedBooks = () => {
     }
 
     try {
-      const response = await removeBook(bookId, token);
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
+      const { data } = await removeBook({
+        variables: { "bookId":  bookId } });
 
       // const updatedUser = await response.json();
       // setUserData(updatedUser);
