@@ -1,5 +1,6 @@
-const { User } = require('../models');
+const { User, bookSchema } = require('../models');
 const { signToken } = require('../utils/auth');
+const { AuthenticationError } = require('apollo-server-express');
 
 const resolvers = {
     Query: {
@@ -7,7 +8,8 @@ const resolvers = {
         me: async (parent, args, context) => {
             if (context.user) {
                 const foundUser = await User.findOne({
-                    $or: [{ _id: user ? user._id : params.id }, { username: params.username }],
+                    //$or: [{ _id: user ? user._id : params.id }, { username: params.username }],
+                    _id: context.user._id
                 });
                 return foundUser;
             }
@@ -17,7 +19,7 @@ const resolvers = {
     },
     Mutation: {
         // create a user, sign a token, and send it back (to client/src/components/SignUpForm.js)
-        createUser: async(parent, args) => {
+        addUser: async(parent, args) => {
             const user = await User.create(args);
             const token = signToken(user);
 
@@ -25,8 +27,8 @@ const resolvers = {
         },
         // login a user, sign a token, and send it back (to client/src/components/LoginForm.js)
         // {body} is destructured req.body
-        login: async (parent, { email, username, password }) => {
-            const user = await User.findOne({ $or: [{ username: username }, { email: email }] });
+        login: async (parent, { email, password }) => {
+            const user = await User.findOne({ email: email });
             
             if (!user) {
                 throw new AuthenticationError('Incorrect credentials');
@@ -38,16 +40,18 @@ const resolvers = {
                 throw new AuthenticationError('Incorrect credentials');
             }
 
+            console.log('logged in');
+
             const token = signToken(user);
+
             return { token, user };
         },
         // save a book to a user's `savedBooks` field by adding it to the set (to prevent duplicates)
         // user comes from `req.user` created in the auth middleware function
-        saveBook: async (parent, { user, book }, context) => {
-            
+        saveBook: async (parent, { book }, context) => {
             if (context.user) {
                 const updatedUser = await User.findOneAndUpdate(
-                    { _id: user._id },
+                    { _id: context.user._id },
                     { $addToSet: { savedBooks: book } },
                     { new: true, runValidators: true }
                 );
@@ -57,11 +61,11 @@ const resolvers = {
             throw new AuthenticationError('You need to be logged in!');
         },
         // remove a book from `savedBooks`
-        deleteBook: async (parent, { user }, context) => {
+        removeBook: async (parent, { book }, context) => {
             if (!context.user) {
             const updatedUser = await User.findOneAndUpdate(
-                { _id: user._id },
-                { $pull: { savedBooks: { bookId: params.bookId } } },
+                { _id: context.user._id },
+                { $pull: { savedBooks: { bookId: book.bookId } } },
                 { new: true }
             );
                 return updatedUser;
