@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Jumbotron, Container, Col, Form, Button, Card, CardColumns } from 'react-bootstrap';
+import { Jumbotron, Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 import Auth from '../utils/auth';
 import { useMutation } from '@apollo/react-hooks';
@@ -114,32 +115,36 @@ const SearchBooks = () => {
             ? `Viewing ${searchedBooks.length} results:`
             : 'Search for a book to begin'}
         </h2>
-        <CardColumns>
+
+        <Row>
           {searchedBooks.map((book) => {
             return (
-              <Card key={book.bookId} border='dark'>
+              <Col sm={6} md={4} lg={3}>
+              <Card key={book.bookId} border='dark' className='mb-2'>
                 {book.image ? (
                   <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' />
-                ) : null}
+                  ) : null}
                 <Card.Body>
-                  <Card.Title>{book.title}</Card.Title>
+                    <Card.Title><a href={book.link} target='_blank' className='text-dark'>{book.title} <FaExternalLinkAlt /></a></Card.Title>
                   <p className='small'>Authors: {book.authors}</p>
-                  <Card.Text>{book.description}</Card.Text>
+                  <Card.Text style={{maxHeight: "200px", overflow: "auto"}}>{book.description}</Card.Text>
                   {Auth.loggedIn() && (
                     <Button
-                      disabled={savedBookIds?.some((savedBookId) => savedBookId === book.bookId)}
+                    disabled={savedBookIds?.some((savedBookId) => savedBookId === book.bookId)}
                       className='btn-block btn-info'
                       onClick={() => handleSaveBook(book.bookId)}>
                       {savedBookIds?.some((savedBookId) => savedBookId === book.bookId)
                         ? 'Saved!'
-                        : 'Save this Book!'} 
+                        : 'Save this Book!'}
                     </Button>
                   )}
                 </Card.Body>
               </Card>
+              </Col>
             );
           })}
-        </CardColumns>
+        </Row>
+
       </Container>
     </>
   );

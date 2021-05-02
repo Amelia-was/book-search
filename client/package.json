@@ -13,9 +13,12 @@
     "graphql": "^15.5.0",
     "graphql-tag": "^2.12.4",
     "jwt-decode": "^2.2.0",
+    "loaders.css": "^0.1.2",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
+    "react-icons": "^4.2.0",
+    "react-loaders": "^3.0.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1"
   },
