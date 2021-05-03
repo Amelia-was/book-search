@@ -1,7 +1,6 @@
 import React from 'react';
 import { Jumbotron, Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
-import { FaExternalLinkAlt, FaBook } from 'react-icons/fa';
-import Loader from 'react-loaders'
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { QUERY_ME } from '../utils/queries';
