@@ -3,13 +3,13 @@
 ### Powered by Google Books API
 
 ## Description
-A book search engine, powered by Google Books API. Users can create an account and search for books. Searched books can be saved to the users personal list of saved books. The app runs on a NoSQL Database with a GraphQL API. 
+A book search engine, powered by Google Books API. Users can search for books by title. Users with an account can save books to a personal list. The app runs on a NoSQL Database with a GraphQL API. 
 The app is deployed via [Heroku](https://hidden-anchorage-75697.herokuapp.com/). 
 
 ![App screenshot](./img/book-search-screenshot.png)
 
 ## Usage
-Use the homepage to search for books. To save books, you may create an account or log into an existing account via the 'login/signup' button in the navigation. Use the save button to save books to your list. To see your saved books, click 'See Your Books' in the navigation bar. Saved books can be deleted from the 'See Your Books' page.
+Use the homepage to search for books. To save books, you must first create an account or log into an existing account via the 'login/signup' button in the navigation bar. Use the save button to save books to your list. To see your saved books, click 'See Your Books' in the navigation bar. Saved books can be deleted from the 'See Your Books' page.
 
 ## Questions
 For additional questions, contact Amelia:
